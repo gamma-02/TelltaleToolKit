@@ -1,5 +1,7 @@
 using System.Numerics;
 using System.Runtime.CompilerServices;
+using TelltaleToolKit.Serialization;
+using TelltaleToolKit.Serialization.Serializers;
 using TelltaleToolKit.T3Types;
 using TelltaleToolKit.T3Types.ActorMaps;
 using TelltaleToolKit.T3Types.Animations;
@@ -1724,11 +1726,6 @@ public class SoundSfxInterface
 public class SoundSnapshotInstance
 {
 }
-
-public class MetaVersionInfo
-{
-}
-
 public class SoundEventPreloadInterface
 {
 }
@@ -2019,10 +2016,6 @@ public class T3RenderStateBlock
 public class RenderObject_PostMaterial
 {
 }
-public class T3OcclusionMeshData
-{
-}
-
 public class SoundEventBankMap
 {
 }
@@ -2072,10 +2065,6 @@ public class LightProbeData
 }
 
 public class StringFilter
-{
-}
-
-public class T3OcclusionMeshBatch
 {
 }
 
