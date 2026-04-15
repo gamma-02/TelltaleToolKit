@@ -16,7 +16,7 @@ public class BoneConstraints
     public Vector3 HingeAxis { get; set; }
 
     [MetaMember("mAxisRange")]
-    public Range<float>[] AxisRange { get; set; } = new Range<float>[3];
+    public Range<float>[] AxisRange { get; set; } = [new(), new(), new()];
 }
 
 [MetaClassSerializerGlobal(typeof(EnumSerializer<BoneType>))]
