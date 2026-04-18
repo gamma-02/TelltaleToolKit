@@ -1,4 +1,3 @@
-using System.IO;
 using TelltaleToolKit.Reflection;
 using TelltaleToolKit.Serialization;
 using TelltaleToolKit.Serialization.Binary;
@@ -38,58 +37,9 @@ public class T3GFXVertexState
 
             MetaClass? desc = stream.GetMetaClass(typeof(T3GFXVertexState));
 
-            if (stream is MetaStreamWriter streamWriter)
+            if (stream is MetaStreamWriter)
             {
-                if (obj.AttributeCount > 32)
-                    throw new InvalidDataException("AttributeCount is too large");
-
-                /*
-                 if (obj.VertexCountPerInstance > 32)
-                  throw new InvalidDataException("VertexCountPerInstance is too large");
-                */
-
-                if (desc is not null && desc.ContainsMember("mIndexBufferCount") && obj.IndexBufferCount > 4)
-                    throw new InvalidDataException("IndexBufferCount is too large");
-
-                for (int i = 0; i < obj.Attributes.Count; i++)
-                {
-                    GFXPlatformAttributeParams attribute = obj.Attributes[i];
-                    stream.PreSerialize(ref attribute);
-                    stream.Serialize(ref attribute);
-                    obj.Attributes[i] = attribute;
-                }
-
-                if (desc is not null && desc.ContainsMember("mIndexBufferCount"))
-                {
-                    for (int i = 0; i < obj.IndexBuffer.Count; i++)
-                    {
-                        T3GFXBuffer indexBuffer = obj.IndexBuffer[i];
-                        stream.PreSerialize(ref indexBuffer);
-                        stream.Serialize(ref indexBuffer);
-                        obj.IndexBuffer[i] = indexBuffer;
-                    }
-                }
-                else
-                {
-                    bool hasIndexBuffer = obj.IndexBuffer.Count > 0;
-                    streamWriter.Write(hasIndexBuffer);
-
-                    if (hasIndexBuffer)
-                    {
-                        T3GFXBuffer indexBuffer = obj.IndexBuffer[0];
-                        stream.PreSerialize(ref indexBuffer);
-                        stream.Serialize(ref indexBuffer);
-                        obj.IndexBuffer[0] = indexBuffer;
-                    }
-                }
-
-                for (int i = 0; i < obj.VertexBuffer.Count; i++)
-                {
-                    T3GFXBuffer vertexBuffer = obj.VertexBuffer[i];
-                    stream.PreSerialize(ref vertexBuffer);
-                    stream.Serialize(ref vertexBuffer);
-                    obj.VertexBuffer[i] = vertexBuffer;
-                }
+                throw new NotSupportedException();
             }
 
             if (stream is MetaStreamReader streamReader)
@@ -97,8 +47,8 @@ public class T3GFXVertexState
                 if (obj.AttributeCount > 32)
                     throw new InvalidDataException("AttributeCount is too large");
 
-                //if (obj.VertexCountPerInstance > 32)
-                    //throw new InvalidDataException("VertexCountPerInstance is too large"); // Remove this for modding
+                if (obj.VertexCountPerInstance > 32)
+                    throw new InvalidDataException("VertexCountPerInstance is too large"); // Remove this for modding
 
                 if (obj.IndexBufferCount > 4)
                     throw new InvalidDataException("IndexBufferCount is too large");

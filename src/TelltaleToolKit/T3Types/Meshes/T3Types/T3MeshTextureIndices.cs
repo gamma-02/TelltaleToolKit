@@ -12,26 +12,21 @@ public class T3MeshTextureIndices
     {
         public override void Serialize(ref T3MeshTextureIndices obj, MetaStream stream)
         {
-         
             if (stream is MetaStreamWriter streamWriter)
             {
-                if (obj?.Index != null)
+                for (var i = 0; i < 2; i++)
                 {
-
-                    for (var i = 0; i < 2; i++)
+                    int index = obj.Index[i];
+                    if ((index & int.MinValue) == 0) // int.MinValue == 0x80000000
                     {
-                        int index = obj.Index[i];
-                        if ((index & int.MinValue) == 0) // int.MinValue == 0x80000000
-                        {
-                            int idx = i;
-                            streamWriter.Write(idx);
-                            streamWriter.Write(index);
-                        }
-
+                        int idx = i;
+                        streamWriter.Write(idx);
+                        streamWriter.Write(index);
                     }
+
+                    // Write the end
+                    streamWriter.Write(-1);
                 }
-                // Write the end
-                streamWriter.Write(-1);
             }
             else if (stream is MetaStreamReader streamReader)
             {

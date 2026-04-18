@@ -24,7 +24,7 @@ public class T3MaterialTexture
     public T3MaterialPropertyType PropertyType { get; set; }
 
     [MetaMember("mTextureTypes")]
-    public BitSetBase TextureTypes { get; set; }
+    public BitSetBase TextureTypes { get; }
 
     [MetaMember("mFirstParamIndex")]
     public uint FirstParamIndex { get; set; }

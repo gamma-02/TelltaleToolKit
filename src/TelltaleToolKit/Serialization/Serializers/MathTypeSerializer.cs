@@ -1,7 +1,5 @@
 using System.Numerics;
-using TelltaleToolKit.Reflection;
 using TelltaleToolKit.Serialization.Binary;
-using TelltaleToolKit.T3Types;
 
 namespace TelltaleToolKit.Serialization.Serializers;
 
@@ -10,13 +8,9 @@ public class Vector2Serializer : MetaClassSerializer<Vector2>
 {
     public override void Serialize(ref Vector2 obj, MetaStream stream)
     {
+        // TODO: Add in MetaHeader for accuracy reasons. 
         if (stream is MetaStreamWriter streamWriter)
         {
-            if (streamWriter.Configuration.CanModifySerializedClassesList)
-            {
-                MetaClass? description = stream.GetMetaClass(typeof(Vector2));
-                streamWriter.AddVersionInfo(description);
-            }
             streamWriter.Write(obj.X);
             streamWriter.Write(obj.Y);
         }
@@ -35,11 +29,6 @@ public class Vector3Serializer : MetaClassSerializer<Vector3>
     {
         if (stream is MetaStreamWriter streamWriter)
         {
-            if (streamWriter.Configuration.CanModifySerializedClassesList)
-            {
-                MetaClass? description = stream.GetMetaClass(typeof(Vector3));
-                streamWriter.AddVersionInfo(description);
-            }
             streamWriter.Write(obj.X);
             streamWriter.Write(obj.Y);
             streamWriter.Write(obj.Z);
@@ -60,11 +49,6 @@ public class Vector4Serializer : MetaClassSerializer<Vector4>
     {
         if (stream is MetaStreamWriter streamWriter)
         {
-            if (streamWriter.Configuration.CanModifySerializedClassesList)
-            {
-                MetaClass? description = stream.GetMetaClass(typeof(Vector4));
-                streamWriter.AddVersionInfo(description);
-            }
             streamWriter.Write(obj.X);
             streamWriter.Write(obj.Y);
             streamWriter.Write(obj.Z);
@@ -86,13 +70,9 @@ public class QuaternionSerializer : MetaClassSerializer<Quaternion>
 {
     public override void Serialize(ref Quaternion obj, MetaStream stream)
     {
+        // TODO: Add in MetaHeader for accuracy reasons. 
         if (stream is MetaStreamWriter streamWriter)
         {
-            if (streamWriter.Configuration.CanModifySerializedClassesList)
-            {
-                MetaClass? description = stream.GetMetaClass(typeof(Quaternion));
-                streamWriter.AddVersionInfo(description);
-            }
             streamWriter.Write(obj.X);
             streamWriter.Write(obj.Y);
             streamWriter.Write(obj.Z);

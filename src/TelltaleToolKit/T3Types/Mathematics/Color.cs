@@ -2,8 +2,6 @@
 using TelltaleToolKit.Reflection;
 using TelltaleToolKit.Serialization;
 using TelltaleToolKit.Serialization.Binary;
-using TelltaleToolKit.Serialization.Serializers;
-using TelltaleToolKit.T3Types.Meshes.T3Types;
 
 namespace TelltaleToolKit.T3Types.Mathematics;
 
@@ -28,14 +26,8 @@ public struct Color
     {
         public override void Serialize(ref Color obj, MetaStream stream)
         {
-
             if (stream is MetaStreamWriter streamWriter)
             {
-                if(streamWriter.Configuration.CanModifySerializedClassesList)
-                {
-                    MetaClass? description = stream.GetMetaClass(typeof(Color));
-                    streamWriter.AddVersionInfo(description);
-                }
                 streamWriter.Write(obj.R);
                 streamWriter.Write(obj.G);
                 streamWriter.Write(obj.B);

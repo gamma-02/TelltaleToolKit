@@ -48,7 +48,6 @@ public class T3MaterialData
 
         public override void PreSerialize(ref T3MaterialData obj, MetaStream stream, MetaClassType? type = null)
         {
-            DefaultSerializer.PreSerialize(ref obj, stream);
             if (obj is null)
             {
                 obj = new T3MaterialData();
@@ -57,7 +56,6 @@ public class T3MaterialData
 
         public override void Serialize(ref T3MaterialData obj, MetaStream stream)
         {
-
             DefaultSerializer.Serialize(ref obj, stream);
 
             MetaClass? classDescription = stream.GetMetaClass(typeof(T3MaterialData));
@@ -67,24 +65,7 @@ public class T3MaterialData
 
             if (stream is MetaStreamWriter streamWriter)
             {
-                obj.CompiledData2 ??= [];
-
-                streamWriter.Write(obj.CompiledData2.Count);
-
-                for (int i = 0; i < obj.CompiledData2.Count; i++)
-                {
-                    streamWriter.Write(i);
-
-                    T3MaterialCompiledData compiledData = obj.CompiledData2[i];
-
-                    Toolkit.Instance.GetSerializer<T3MaterialCompiledData>().PreSerialize(ref compiledData, stream);
-
-                    Toolkit.Instance.GetSerializer<T3MaterialCompiledData>().Serialize(ref compiledData, stream);
-
-                    obj.CompiledData2[i] = compiledData;
-                }
-
-                return;
+                throw new NotSupportedException();
             }
 
             if (stream is MetaStreamReader streamReader)
@@ -92,25 +73,15 @@ public class T3MaterialData
                 int numCompiledData = streamReader.ReadInt32();
 
                 obj.CompiledData2 = new List<T3MaterialCompiledData>(numCompiledData);
-                
-                for (int i = 0; i < numCompiledData; i++)
-                    obj.CompiledData2.Add(new T3MaterialCompiledData());
 
-                for (int i = 0; i < numCompiledData; i++)
+                for (var i = 0; i < numCompiledData; i++)
                 {
+                    // TODO: Add the index to the main class
                     int materialIndex = streamReader.ReadInt32();
 
-                    if ((uint)materialIndex >= (uint)numCompiledData)
-                        throw new InvalidDataException(
-                            $"Material index {materialIndex} was outside the valid range 0..{numCompiledData - 1}.");
-
-                    T3MaterialCompiledData compiledData = obj.CompiledData2[materialIndex];
-
-                    Toolkit.Instance.GetSerializer<T3MaterialCompiledData>().PreSerialize(ref compiledData, stream);
-
+                    T3MaterialCompiledData compiledData = new();
                     Toolkit.Instance.GetSerializer<T3MaterialCompiledData>().Serialize(ref compiledData, stream);
-
-                    obj.CompiledData2[materialIndex] = compiledData;
+                    obj.CompiledData2.Add(compiledData);
                 }
             }
         }

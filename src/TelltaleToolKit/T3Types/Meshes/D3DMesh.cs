@@ -140,7 +140,7 @@ public class D3DMesh
     public T3IndexBuffer T3IndexBuffer { get; set; }
     public T3VertexBuffer[] T3VertexBuffers { get; set; }
 
-    public T3OcclusionMeshData OcclusionMeshData { get; set; }
+    public T3OcclusionMeshData OcclusionMeshData { get; set; } = new();
 
     /// <summary>
     /// The main mesh data for version above 22. It contains LODs, bone references
@@ -352,7 +352,6 @@ public class D3DMesh
 
         public override void Serialize(ref D3DMesh obj, MetaStream stream)
         {
-
             DefaultSerializer.PreSerialize(ref obj, stream);
             DefaultSerializer.Serialize(ref obj, stream);
 
@@ -364,22 +363,17 @@ public class D3DMesh
                     return;
                 }
 
-
-
                 if (obj.Version >= 22)
                 {
                     SerializeInternalResources(ref obj, stream);
+                    return;
                 }
 
                 streamWriter.Write(0);
 
-
-
                 if (obj.Version >= 52)
                 {
                     bool hasOcclusionData = obj.OcclusionMeshData != null;
-                    streamWriter.Write(hasOcclusionData);
-
                     if (hasOcclusionData)
                     {
                         // TODO: Assign this.
@@ -638,48 +632,12 @@ public class D3DMesh
                 }
             }
         }
-         
+
         private static void SerializeInternalResources(ref D3DMesh obj, MetaStream stream)
         {
             if (stream is MetaStreamWriter streamWriter)
             {
-                obj.InternalResources ??= [];
-
-                streamWriter.Write(obj.InternalResources.Count);
-
-                foreach (HandleBase handle in obj.InternalResources)
-                {
-                    Symbol symbol = handle?.ObjectInfo?.ObjectName ?? Symbol.DefaultSymbol;
-
-                    object? propertyValue = handle?.ObjectInfo?.HandleObject;
-                    if (propertyValue is null)
-                        throw new InvalidOperationException(
-                            $"D3DMesh internal resource '{symbol}' has no HandleObject.");
-
-                    MetaClass metaClass = stream.GetMetaClass(propertyValue.GetType());
-                    MetaClassType typeSymbol = metaClass.ClassType;
-                    handle.ObjectInfo.Type = typeSymbol;
-
-                    streamWriter.Write(symbol);
-                    streamWriter.Write(typeSymbol.Symbol.Crc64);
-
-                    stream.BeginBlock();
-
-
-
-
-                    MetaClassSerializer serializer = Toolkit.Instance.GetSerializer(typeSymbol.LinkingType);
-                    serializer.PreSerialize(ref propertyValue, stream, typeSymbol);
-
-
-                    serializer.Serialize(ref propertyValue, stream);
-
-
-
-                    stream.EndBlock();
-                }
-
-                return;
+                throw new NotSupportedException();
             }
 
             if (stream is MetaStreamReader streamReader)

@@ -23,25 +23,19 @@ public class BitSetBase
                 throw new ArgumentNullException(nameof(type), "BitSetBase requires a metaclass type!");
             }
 
-            int? bitSetSize = type.Symbol.SymbolName switch
+            obj = type.Symbol.SymbolName switch
             {
-                "BitSetBase<1>" => 1,
-                "BitSetBase<2>" => 2,
-                "BitSetBase<3>" => 3,
-                "BitSetBase<4>" => 4,
-                "BitSetBase<5>" => 5,
-                "BitSetBase<6>" => 6,
-                "BitSetBase<7>" => 7,
-                "BitSetBase<8>" => 8,
-                "BitSetBase<9>" => 9,
-                _ => throw new InvalidDataException($"Unexpected BitSetBase type: {type.Symbol.SymbolName}")
+                "BitSetBase<1>" => new BitSetBase(1),
+                "BitSetBase<2>" => new BitSetBase(2),
+                "BitSetBase<3>" => new BitSetBase(3),
+                "BitSetBase<4>" => new BitSetBase(4),
+                "BitSetBase<5>" => new BitSetBase(5),
+                "BitSetBase<6>" => new BitSetBase(6),
+                "BitSetBase<7>" => new BitSetBase(7),
+                "BitSetBase<8>" => new BitSetBase(8),
+                "BitSetBase<9>" => new BitSetBase(9),
+                _ => obj
             };
-
-            if (obj == null || obj.Values == null || obj.Values.Length != bitSetSize.Value)
-            {
-                obj = new BitSetBase(bitSetSize.Value);
-                return;
-            }
         }
 
         public override void Serialize(ref BitSetBase obj, MetaStream stream)

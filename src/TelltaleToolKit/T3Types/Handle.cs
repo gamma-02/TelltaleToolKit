@@ -68,8 +68,7 @@ public class HandleSerializer<T> : MetaClassSerializer<Handle<T>>
 {
     public override void PreSerialize(ref Handle<T> obj, MetaStream stream, MetaClassType? type = null)
     {
-        if (obj is null)
-            obj = new Handle<T>();
+        obj = new Handle<T>();
     }
 
     public override void Serialize(ref Handle<T> obj, MetaStream stream)
