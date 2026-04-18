@@ -6,7 +6,7 @@ namespace TelltaleToolKit.T3Types;
 
 public class HandleObjectInfo
 {
-    public Symbol ObjectName = new Symbol(0);
+    public Symbol ObjectName = new(0);
     public Flags Flags;
     public MetaClassType Type;
     public object HandleObject;
@@ -20,7 +20,7 @@ public class HandleObjectInfo
 public class HandleBase
 {
     // public Symbol ObjectName;
-    public HandleObjectInfo ObjectInfo = new HandleObjectInfo();
+    public HandleObjectInfo ObjectInfo = new();
 
     [MetaClassSerializerGlobal(typeof(HandleBaseSerializer))]
     public class HandleBaseSerializer : MetaClassSerializer<HandleBase>
@@ -60,7 +60,7 @@ public class Handle<T> : HandleBase
 {
 }
 
-public class HandleLock<T> : Handle<T> 
+public class HandleLock<T> : Handle<T>
 {
 }
 
@@ -68,7 +68,8 @@ public class HandleSerializer<T> : MetaClassSerializer<Handle<T>>
 {
     public override void PreSerialize(ref Handle<T> obj, MetaStream stream, MetaClassType? type = null)
     {
-        obj = new Handle<T>();
+        if (obj is null)
+            obj = new Handle<T>();
     }
 
     public override void Serialize(ref Handle<T> obj, MetaStream stream)
