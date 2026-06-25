@@ -56,6 +56,28 @@ public class HandleBase
 [MetaSerializer(typeof(HandleSerializer<>), typeof(Handle<>))]
 public class Handle<T> : HandleBase
 {
+    public Symbol GetObjectName() => ObjectInfo.ObjectName;
+    public ulong GetNameHash() => ObjectInfo.ObjectName.Crc64;
+    public string? GetDebugString() => ObjectInfo.ObjectName.DebugString;
+
+    public T1? GetObject<T1>(Workspace workspace) where T1 : class, new()
+    {
+        // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
+        if (ObjectInfo.HandleObject != null)
+        {
+            return (T1)ObjectInfo.HandleObject;
+        }
+
+        T1? obj = workspace.LoadAsset<T1>(GetNameHash());
+
+        if (obj == null)
+            return null;
+
+        ObjectInfo.HandleObject = obj;
+
+        return obj;
+
+    }
 }
 
 public class HandleLock<T> : Handle<T>
