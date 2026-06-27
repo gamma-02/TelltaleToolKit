@@ -127,7 +127,7 @@ public class Workspace
     /// Gets the <see cref="LuaState"/> used to evaluate resource-description (.resdesc) Lua scripts.
     /// Created lazily on first access.
     /// </summary>
-    public LuaState ResdecLuaState
+    public LuaState ResdescLuaState
     {
         get
         {
@@ -317,7 +317,7 @@ public class Workspace
         }
 
         string lua = Encoding.ASCII.GetString(fileBytes);
-        await ResdecLuaState.DoStringAsync(lua);
+        await ResdescLuaState.DoStringAsync(lua);
 
         return _extractedResourceDescriptions.Last();
     }
